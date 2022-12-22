@@ -4,7 +4,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {AuthContext} from "../context/AuthContext";
 
 function NavBar() {
-    const {authenticated} = useContext(AuthContext);
+    const {authenticated, logout} = useContext(AuthContext);
     const navigate = useNavigate();
     console.log(authenticated);
 
@@ -37,7 +37,7 @@ function NavBar() {
                 :
                 <button
                     type="button"
-                    onClick={() => navigate('/')}
+                    onClick={logout}
                 >
                     Log out
                 </button>}
