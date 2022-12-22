@@ -1,37 +1,49 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import logo from '../assets/banana-01.png';
-import { useHistory, Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import {AuthContext} from "../context/AuthContext";
 
 function NavBar() {
-  const history = useHistory();
+    const {authenticated} = useContext(AuthContext);
+    const navigate = useNavigate();
+    console.log(authenticated);
 
-  return (
-    <nav>
-        <Link to="/">
+    return (
+        <nav>
+            <Link to="/">
           <span className="logo-container">
             <img src={logo} alt="logo"/>
             <h3>
               Banana Security
             </h3>
           </span>
-        </Link>
+            </Link>
 
-      <div>
-        <button
-          type="button"
-          onClick={() => history.push('/signin')}
-        >
-          Log in
-        </button>
-        <button
-          type="button"
-          onClick={() => history.push('/signup')}
-        >
-          Registreren
-        </button>
-      </div>
-    </nav>
-  );
+            {authenticated === false ?
+                <div>
+                    <button
+                        type="button"
+                        onClick={() => navigate('/signin')}
+                    >
+                        Log in
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => navigate('/signup')}
+                    >
+                        Registreren
+                    </button>
+                </div>
+                :
+                <button
+                    type="button"
+                    onClick={() => navigate('/')}
+                >
+                    Log out
+                </button>}
+
+        </nav>
+    );
 }
 
 export default NavBar;
