@@ -10,10 +10,6 @@ function SignIn() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log({
-            emailadres: email,
-            password: password
-        })
         login(email);
     }
 
