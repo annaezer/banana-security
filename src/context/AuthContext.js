@@ -11,11 +11,12 @@ function AuthContextProvider({children}) {
         user: '',
     });
 
-    function logIn(email) {
+    function logIn(email, token) {
         setIsAuth({
             isAuth: true,
             user: email
         });
+        localStorage.setItem('token', token);
         console.log('Gebruiker is ingelogd!');
         navigate('/profile');
     }

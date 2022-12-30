@@ -1,20 +1,42 @@
 import React, {useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {AuthContext} from "../context/AuthContext";
+import axios from "axios";
 
 function SignIn() {
 
     const {login} = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, toggleError] = useState(false);
+    const [loading, toggleLoading] = useState(false);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        login(email);
+        console.log(`Emailadres is: ${email}, wachtwoord is ${password}`)
+        toggleError(false);
+        toggleLoading(true);
+
+        try {
+            const response = await axios.post('http://localhost:3000/login', {
+                email: email,
+                password: password,
+            });
+            console.log(response);
+            const token = response.data.accessToken;
+            console.log (token);
+            login(email, token);
+
+        } catch (e) {
+            console.error(e);
+            toggleError(true);
+        }
+        toggleLoading(false);
     }
 
     return (
         <>
+            {loading && <p>Loading...</p>}
             <h1>Inloggen</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias cum debitis dolor dolore fuga id
                 molestias qui quo unde?</p>
@@ -40,6 +62,7 @@ function SignIn() {
                         value={password}
                     />
                 </label>
+                {error && <p>Gegevens onjuist</p>}
                 <button type='submit'>Inloggen</button>
             </form>
 

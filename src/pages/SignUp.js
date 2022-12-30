@@ -7,11 +7,15 @@ function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [error, toggleError] = useState(false);
+    const [loading, toggleLoading] = useState(false);
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
         console.log(`Emailadres is: ${email} Wachtwoord is ${password} Username is ${username}`);
+        toggleLoading(true);
+        toggleError(false);
 
         try {
             const response = await axios.post('http://localhost:3000/register', {
@@ -21,13 +25,17 @@ function SignUp() {
             });
             console.log(response);
             navigate('/signin');
+
         } catch (e) {
+            toggleError(true);
             console.error(e);
         }
+        toggleLoading(false);
     }
 
     return (
         <>
+            {loading && <p>Loading...</p>}
             <h1>Registreren</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur atque consectetur, dolore eaque
                 eligendi
@@ -65,6 +73,7 @@ function SignUp() {
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </label>
+                {error && <p>Gegevens onjuist</p>}
                 <button type='submit'>Registreren</button>
             </form>
             <p>Heb je al een account? Je kunt je <Link to="/signin">hier</Link> inloggen.</p>
