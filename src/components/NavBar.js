@@ -36,7 +36,7 @@ function NavBar() {
                 </div>
                 :
                 <>
-                    <span>{user}</span>
+                    <span>{user.email}</span>
                     <button
                         type="button"
                         onClick={logout}

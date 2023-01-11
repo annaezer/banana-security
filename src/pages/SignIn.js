@@ -13,7 +13,6 @@ function SignIn() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log(`Emailadres is: ${email}, wachtwoord is ${password}`)
         toggleError(false);
         toggleLoading(true);
 
@@ -24,8 +23,7 @@ function SignIn() {
             });
             console.log(response);
             const token = response.data.accessToken;
-            console.log (token);
-            login(email, token);
+            login(token);
 
         } catch (e) {
             console.error(e);
