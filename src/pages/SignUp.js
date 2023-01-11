@@ -13,7 +13,6 @@ function SignUp() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log(`Emailadres is: ${email} Wachtwoord is ${password} Username is ${username}`);
         toggleLoading(true);
         toggleError(false);
 

@@ -11,6 +11,7 @@ function AuthContextProvider({children}) {
     const [isAuth, setIsAuth] = useState({
         isAuth: false,
         user: null,
+        // status: 'pending',
     });
 
     function logIn(token) {
