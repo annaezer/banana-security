@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
+import {cleanup} from "@testing-library/react";
 
 function SignUp() {
 
@@ -10,6 +11,14 @@ function SignUp() {
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const navigate = useNavigate();
+
+    const controller = new AbortController();
+
+    useEffect(() => {
+        return function cleanup() {
+            controller.abort();
+        }
+    }, []);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -21,6 +30,8 @@ function SignUp() {
                 email: email,
                 password: password,
                 username: username,
+            }, {
+                signal: controller.signal
             });
             console.log(response);
             navigate('/signin');

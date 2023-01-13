@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {AuthContext} from "../context/AuthContext";
 import axios from "axios";
@@ -11,6 +11,13 @@ function SignIn() {
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
 
+    const controller = new AbortController();
+    useEffect(() => {
+        return function cleanup() {
+            controller.abort();
+        }
+    }, []);
+
     async function handleSubmit(e) {
         e.preventDefault();
         toggleError(false);
@@ -20,6 +27,8 @@ function SignIn() {
             const response = await axios.post('http://localhost:3000/login', {
                 email: email,
                 password: password,
+            }, {
+                signal: controller.signal
             });
             console.log(response);
             const token = response.data.accessToken;

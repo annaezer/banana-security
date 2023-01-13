@@ -9,6 +9,8 @@ function Profile() {
     const [secret, setSecret] = useState({});
 
     useEffect(() => {
+        const controller = new AbortController();
+
         async function getSecretData() {
             try {
                 const secretData = await axios.get('http://localhost:3000/660/private-content', {
@@ -16,6 +18,7 @@ function Profile() {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },
+                    signal: controller.signal
                 })
                 console.log(secretData);
                 setSecret(secretData.data);
@@ -26,6 +29,10 @@ function Profile() {
         }
 
         void getSecretData();
+
+        return function cleanup() {
+            controller.abort();
+        }
     }, [])
 
 
@@ -39,9 +46,9 @@ function Profile() {
             </section>
             {Object.keys(secret).length > 0 &&
                 <section>
-                <h2>{secret.title}</h2>
-                <p>{secret.content}</p>
-            </section>
+                    <h2>{secret.title}</h2>
+                    <p>{secret.content}</p>
+                </section>
             }
             <p>Terug naar de <Link to="/">Homepagina</Link></p>
         </>

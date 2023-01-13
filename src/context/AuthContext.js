@@ -35,6 +35,7 @@ function AuthContextProvider({children}) {
         console.log('Gebruiker is ingelogd!');
         localStorage.setItem('token', token);
         const decoded = jwt_decode(token);
+        console.log (decoded);
         const id = decoded.sub;
         fetchUserData(id, token, '/profile');
     }
