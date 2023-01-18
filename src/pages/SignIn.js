@@ -9,9 +9,8 @@ function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, toggleError] = useState(false);
-    const [loading, toggleLoading] = useState(false);
-
     const controller = new AbortController();
+
     useEffect(() => {
         return function cleanup() {
             controller.abort();
@@ -21,7 +20,6 @@ function SignIn() {
     async function handleSubmit(e) {
         e.preventDefault();
         toggleError(false);
-        toggleLoading(true);
 
         try {
             const response = await axios.post('http://localhost:3000/login', {
@@ -38,12 +36,10 @@ function SignIn() {
             console.error(e);
             toggleError(true);
         }
-        toggleLoading(false);
     }
 
     return (
         <>
-            {loading && <p>Loading...</p>}
             <h1>Inloggen</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias cum debitis dolor dolore fuga id
                 molestias qui quo unde?</p>

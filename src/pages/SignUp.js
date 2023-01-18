@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
-import {cleanup} from "@testing-library/react";
 
 function SignUp() {
 
@@ -11,7 +10,6 @@ function SignUp() {
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const navigate = useNavigate();
-
     const controller = new AbortController();
 
     useEffect(() => {
@@ -45,7 +43,6 @@ function SignUp() {
 
     return (
         <>
-            {loading && <p>Loading...</p>}
             <h1>Registreren</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur atque consectetur, dolore eaque
                 eligendi
@@ -84,7 +81,7 @@ function SignUp() {
                     />
                 </label>
                 {error && <p>Gegevens onjuist</p>}
-                <button type='submit'>Registreren</button>
+                <button type='submit' disabled={loading}>Registreren</button>
             </form>
             <p>Heb je al een account? Je kunt je <Link to="/signin">hier</Link> inloggen.</p>
         </>

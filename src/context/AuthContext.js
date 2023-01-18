@@ -2,6 +2,7 @@ import {createContext, useEffect, useState,} from 'react';
 import {useNavigate} from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 import axios from "axios";
+import tokenExpired from "../helpers/tokenExpired";
 
 export const AuthContext = createContext({});
 
@@ -15,12 +16,14 @@ function AuthContextProvider({children}) {
     });
 
     useEffect(() => {
+        console.log("Context wordt gerefresht!");
         const token = localStorage.getItem('token');
 
         if (token) {
             const decoded = jwt_decode(token);
-            const id = decoded.sub;
-            fetchUserData(id, token);
+            if (token && (tokenExpired(decoded))) {
+                fetchUserData(decoded.sub, token);
+            }
         } else {
             setIsAuth({
                 isAuth: false,
@@ -28,14 +31,13 @@ function AuthContextProvider({children}) {
                 status: 'done'
             });
         }
-
     }, [])
 
     function logIn(token) {
         console.log('Gebruiker is ingelogd!');
         localStorage.setItem('token', token);
         const decoded = jwt_decode(token);
-        console.log (decoded);
+        console.log(decoded);
         const id = decoded.sub;
         fetchUserData(id, token, '/profile');
     }
@@ -72,7 +74,7 @@ function AuthContextProvider({children}) {
 
     function logOut() {
         console.log('Gebruiker is uitgelogd!');
-        localStorage.clear();
+        localStorage.removeItem('token');
         setIsAuth({
             isAuth: false,
             user: null,

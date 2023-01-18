@@ -35,7 +35,6 @@ function Profile() {
         }
     }, [])
 
-
     return (
         <>
             <h1>Profielpagina</h1>
